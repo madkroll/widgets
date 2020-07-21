@@ -17,6 +17,9 @@ public class RepositoryConfiguration {
         return new ConcurrentHashMap<>();
     }
 
+    /**
+     * Supplies beans with a new instance of Read-Write lock.
+     * */
     @Bean
     public Supplier<ReadWriteLock> lockSupplier() {
         return ReentrantReadWriteLock::new;

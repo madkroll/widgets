@@ -15,6 +15,9 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+/**
+ * Thread-safe repository storing widgets and providing operations on them.
+ * */
 @Repository
 public class SingleMapWidgetRepository implements WidgetRepository {
 
@@ -32,6 +35,14 @@ public class SingleMapWidgetRepository implements WidgetRepository {
         this.shiftingLock = lockSupplier.get();
     }
 
+    /**
+     * Stores a new widget.
+     * In case new widget is placed into Z-index occupied already by another widget:
+     * triggers shifting asynchronously upwards all elements starting from this Z-index and higher.
+     *
+     * @return stored widget
+     * @throws IllegalStateException if widget with such ID is present already.
+     * */
     @Override
     public Widget add(final Widget widget) {
         final Widget alreadyPresent = widgets.putIfAbsent(widget.getId(), widget);
@@ -46,11 +57,23 @@ public class SingleMapWidgetRepository implements WidgetRepository {
         return widget;
     }
 
+    /**
+     * Finds widget by id.
+     *
+     * @return Optional containing widget found by id, otherwise Optional.empty()
+     * */
     @Override
     public Optional<Widget> find(final String id) {
         return Optional.ofNullable(widgets.get(id));
     }
 
+    /**
+     * Updates existent widget.
+     * In case new widget is placed into Z-index occupied already by another widget:
+     * triggers shifting asynchronously upwards all elements starting from this Z-index and higher.
+     *
+     * @return Optional containing updated widget. Otherwise Optional.empty()
+     * */
     @Override
     public Optional<Widget> update(final Widget widget) {
         return Optional.ofNullable(
@@ -66,11 +89,21 @@ public class SingleMapWidgetRepository implements WidgetRepository {
         );
     }
 
+    /**
+     * Deletes widget by id.
+     *
+     * @return removed widget. If widget is not present returns Optional.empty()
+     * */
     @Override
     public Optional<Widget> delete(final String id) {
         return Optional.ofNullable(widgets.remove(id));
     }
 
+    /**
+     * Streams all widgets ordered by Z-index.
+     *
+     * @return stream of widgets ordered by Z-index.
+     * */
     @Override
     public Stream<Widget> listAllOrderedByZIndex() {
         final Lock listingInProgress = shiftingLock.readLock();
@@ -85,6 +118,12 @@ public class SingleMapWidgetRepository implements WidgetRepository {
         }
     }
 
+    /**
+     * If given Z-index is occupied by any widget - shifts upwards all widgets starting from the this Z-index and higher.
+     * The whole execution is done asynchronously on ForkJoinPool.commonPool().
+     *
+     * To enforce consistency for parallel read and write operations - locks access for them.
+     * */
     private void asyncShiftUpwardIfZIndexIsTaken(final long zIndex, final String except) {
         CompletableFuture
                 .runAsync(
@@ -117,6 +156,9 @@ public class SingleMapWidgetRepository implements WidgetRepository {
                 );
     }
 
+    /**
+     * Produces new immutable copy of existent widget shifted upward on Z-index coordinate.
+     * */
     private Widget shiftedUpwardWidget(final Widget originalWidget) {
         return new Widget(
                 originalWidget.getId(),

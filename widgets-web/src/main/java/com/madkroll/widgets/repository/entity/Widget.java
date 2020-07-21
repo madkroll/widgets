@@ -5,6 +5,9 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
+/**
+ * Widget entity stored in repository
+ * */
 public class Widget {
 
     private final String id;
