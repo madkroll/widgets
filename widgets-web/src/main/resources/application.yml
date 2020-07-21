@@ -1,0 +1,7 @@
+rate-limit:
+  global:
+    queries-per-minute: 1000
+  update:
+    queries-per-minute: 200
+  list:
+    queries-per-minute: 200
