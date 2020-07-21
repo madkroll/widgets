@@ -30,7 +30,7 @@ public class GlobalRateLimitingFilterTest {
     private final static long LIMIT = 10L;
     private final static long STILL_REMAINING = 5L;
     private final static long NO_REMAINING_LEFT = 0L;
-    private final static long FIVE_MINUTES_IN_NANOS = 5 * 60 * 1000 * 1000;
+    private final static long FIVE_MINUTES_IN_NANOS = 5 * 60 * 1000 * 1000L;
 
     @Mock
     private FilterChain filterChain;

@@ -20,7 +20,7 @@ public class SingleMapWidgetRepository implements WidgetRepository {
 
     /**
      * This lock is used to synchronize access to widgets while shifting is in progress
-     * */
+     */
     private final ReadWriteLock shiftingLock;
     private final ConcurrentHashMap<String, Widget> widgets;
 
@@ -89,8 +89,8 @@ public class SingleMapWidgetRepository implements WidgetRepository {
         CompletableFuture
                 .runAsync(
                         () -> {
-                            final Lock shiftInProgress = shiftingLock.writeLock();
-                            shiftInProgress.lock();
+                            final Lock shiftingInProgress = shiftingLock.writeLock();
+                            shiftingInProgress.lock();
 
                             try {
                                 final boolean zIndexIsAlreadyTaken = widgets.values()
@@ -111,7 +111,7 @@ public class SingleMapWidgetRepository implements WidgetRepository {
                                             );
                                 }
                             } finally {
-                                shiftInProgress.unlock();
+                                shiftingInProgress.unlock();
                             }
                         }
                 );

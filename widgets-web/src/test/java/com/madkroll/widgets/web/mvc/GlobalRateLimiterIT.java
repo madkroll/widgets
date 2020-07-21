@@ -1,6 +1,5 @@
 package com.madkroll.widgets.web.mvc;
 
-import com.madkroll.widgets.repository.entity.Widget;
 import com.madkroll.widgets.web.ratelimit.RateLimiter;
 import io.github.bucket4j.Bucket;
 import io.github.bucket4j.ConsumptionProbe;
@@ -15,9 +14,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -25,9 +24,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class GlobalRateLimiterIT {
 
     private static final String WIDGET_ID = "widget-id";
-    private static final Widget SAMPLE_WIDGET = new Widget(
-            WIDGET_ID, 1, 2, 3, 4, 5
-    );
     private final static long FIVE_MINUTES_IN_NANOS = 5 * 60 * 1000 * 1000;
     private final static long LIMIT = 10L;
     private final static long ONE_IN_TIME = 1L;

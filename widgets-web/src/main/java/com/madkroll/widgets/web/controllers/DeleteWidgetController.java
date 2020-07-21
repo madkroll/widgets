@@ -1,7 +1,6 @@
 package com.madkroll.widgets.web.controllers;
 
-import com.madkroll.widgets.repository.WidgetNotFoundException;
-import com.madkroll.widgets.repository.WidgetRepository;
+import com.madkroll.widgets.service.DeleteWidgetService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,10 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class DeleteWidgetController {
 
-    private final WidgetRepository widgetRepository;
+    private final DeleteWidgetService deleteWidgetService;
 
     @DeleteMapping("{widgetId}")
     public void handleDelete(@PathVariable final String widgetId) {
-        widgetRepository.delete(widgetId).orElseThrow(() -> new WidgetNotFoundException(widgetId));
+        deleteWidgetService.delete(widgetId);
     }
 }

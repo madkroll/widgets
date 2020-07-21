@@ -1,6 +1,6 @@
 package com.madkroll.widgets.web.controllers;
 
-import com.madkroll.widgets.repository.WidgetRepository;
+import com.madkroll.widgets.service.DeleteWidgetService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -14,15 +14,15 @@ public class DeleteWidgetControllerTest {
     private final static String WIDGET_ID = "widget-id";
 
     @Mock
-    private WidgetRepository widgetRepository;
+    private DeleteWidgetService deleteWidgetService;
 
     @Test
     public void shouldDeleteWidget() {
         // given
         // when
-        new DeleteWidgetController(widgetRepository).handleDelete(WIDGET_ID);
+        new DeleteWidgetController(deleteWidgetService).handleDelete(WIDGET_ID);
 
         // then
-        verify(widgetRepository).delete(WIDGET_ID);
+        verify(deleteWidgetService).delete(WIDGET_ID);
     }
 }
