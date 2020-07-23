@@ -45,6 +45,47 @@ chmod +x widgets-web/target/widgets-web-1.0.0-SNAPSHOT.jar
 java -jar widgets-web/target/widgets-web-1.0.0-SNAPSHOT.jar
 ```
 
+# Request API
+Create widget:
+```shell script
+curl -v \
+  -H "Content-Type:application/json; charset=utf-8" \
+  -X POST \
+  'http://localhost:8080/widgets/create' \
+  -d '{"x":1, "y":2, "z":-1, "width":4, "height":5}'
+```
+
+Delete widget:
+```shell script
+curl -v \
+  -X DELETE \
+  "http://localhost:8080/widgets/delete/${WIDGET_ID}"
+```
+
+Update widget:
+```shell script
+curl -v \
+  -H "Content-Type:application/json; charset=utf-8" \
+  -X PUT \
+  "http://localhost:8080/widgets/update/${WIDGET_ID}" \
+  -d '{"x":100, "y":100, "z":100, "width":100, "height":100}'
+```
+
+Get widget:
+```shell script
+curl -v "http://localhost:8080/widgets/get/${WIDGET_ID}"
+```
+
+List 5 widgets starting from 10th:
+```shell script
+curl -v "http://localhost:8080/widgets/list?from=10&limit=5"
+```
+
+List all widgets:
+```shell script
+curl -v "http://localhost:8080/widgets/list"
+```
+
 # Solution
 ## Repository
 ### ConcurrentHashMap with Read-Write locks
