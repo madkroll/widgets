@@ -16,7 +16,7 @@
     <properties>
         <dockerfile-maven-version>1.4.13</dockerfile-maven-version>
         <bucket4j-core.version>4.10.0</bucket4j-core.version>
-        <hibernate-validator.version>6.0.18.Final</hibernate-validator.version>
+        <hibernate-validator.version>6.0.20.Final</hibernate-validator.version>
     </properties>
 
     <dependencies>
